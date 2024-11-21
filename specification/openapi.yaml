@@ -1,0 +1,60 @@
+openapi: 3.0.2
+info:
+  title: Order Management
+  description: |
+    Specifications of the legacy homegrown order management microservice
+  contact:
+    name: Alan Belisle
+    email: abelisle@salesforce.com
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.0
+tags:
+- name: orders
+  description: Operations about orders
+paths:
+  /orders:
+    post:
+      tags:
+      - orders
+      summary: Create orders
+      operationId: createOrders
+      requestBody:
+        description: Orders to create
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/Order'
+      responses:
+        "201":
+          description: Orders created successfully
+components:
+  schemas:
+    Order:
+      required:
+      - customerName
+      type: object
+      properties:
+        orderNumber:
+          type: string
+          description: Unique identifier for each order
+        customerName:
+          type: string
+          description: Name of the customer
+        phone:
+          type: string
+          description: Phone number of the customer
+        email:
+          type: string
+          description: Email address of the customer
+        createdAt:
+          type: string
+          description: Timestamp for when the order record was created
+          format: date-time
+        updatedAt:
+          type: string
+          description: Timestamp for when the record was last updated
+          format: date-time
