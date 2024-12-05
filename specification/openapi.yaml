@@ -2,35 +2,93 @@ openapi: 3.0.2
 info:
   title: Order Management
   description: |
-    Specifications of the legacy homegrown order management microservice
+    Specifications of the order management microservice.
   contact:
     name: Alan Belisle
     email: abelisle@salesforce.com
   license:
     name: Apache 2.0
     url: http://www.apache.org/licenses/LICENSE-2.0.html
-  version: 1.0.0
+  version: 1.1.0
 tags:
 - name: orders
   description: Operations about orders
 paths:
   /orders:
+    get:
+      tags:
+      - orders
+      summary: Retrieve all orders
+      operationId: get-all-orders
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Order"
+
     post:
       tags:
       - orders
-      summary: Create orders
-      operationId: createOrders
+      summary: Create a new order
+      operationId: create-order
       requestBody:
-        description: Orders to create
+        description: Order to create
         content:
           application/json:
             schema:
-              type: array
-              items:
-                $ref: '#/components/schemas/Order'
+              $ref: "#/components/schemas/Order"
       responses:
         "201":
-          description: Orders created successfully
+          description: Successful operation
+  "/orders/{id}":
+    parameters:
+    - name: id
+      in: path
+      description: Order's unique identifier
+      required: true
+      schema:
+        type: string
+    get:
+      tags:
+      - orders
+      summary: Retrieve order by id
+      operationId: get-order-by-id
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Order"
+    put:
+      tags:
+        - orders
+      summary: Update order by id
+      operationId: update-order-by-id
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Order"
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Order"
+    delete:
+      tags:
+        - orders
+      summary: Delete order by id
+      operationId: delete-order-by-id
+      responses:
+        "200":
+          description: Successful operation
 components:
   schemas:
     Order:
